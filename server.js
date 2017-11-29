@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
-const UsersController = require('./controllers/user');
+const router = require('./router');
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
@@ -30,12 +31,7 @@ app.use(function(req, res, next) {
     next();
   });
 
-
-
-
-app.get('/', (req,res) => {
-  res.send('Hello world!')
-})
+router(app);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
