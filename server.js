@@ -5,6 +5,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
 const UsersController = require('./controllers/user');
+const RegisterController = require('./controllers/register');
+const router = require('./router');
 
 
 mongoose.Promise = global.Promise;
@@ -22,7 +24,7 @@ connection.on('error', (err) => {
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use('/api', UsersController);
+app.use('/register', RegisterController);
 // app.use(function(req, res, next) {  
 //     res.header("Access-Control-Allow-Origin", "*");
 //     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
