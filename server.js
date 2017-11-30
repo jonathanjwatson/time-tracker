@@ -31,7 +31,7 @@ app.use(function(req, res, next) {
     next();
   });
 
-router(app);
+// router(app);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
