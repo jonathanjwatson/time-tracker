@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
-const router = require('./router');
+const UsersController = require('./controllers/user');
 
 
 mongoose.Promise = global.Promise;
@@ -22,14 +22,16 @@ connection.on('error', (err) => {
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use('/api', UsersController);
+// app.use(function(req, res, next) {  
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
+//     res.header("Access-Control-Allow-Credentials", "true");
+//     next();
+//   });
 
-app.use(function(req, res, next) {  
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
-  });
+
 
 // router(app);
 
