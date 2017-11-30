@@ -10,6 +10,7 @@ const LoginController = require('./controllers/login');
 const router = require('./router');
 const passport = require('passport');
 
+const requireAuth = passport.authenticate('jwt', { session: false});
 const requireLogin = passport.authenticate('local', { session: false});
 
 
