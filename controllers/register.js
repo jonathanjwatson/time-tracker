@@ -22,10 +22,12 @@ generateToken = (user) => {
 router.post('/', (req, res, next) => {
     console.log("Hit the register route")
     console.log(req.body);
-    const email = "test2@gmail.com";
+    // const email = "test2@gmail.com";
+    const email = req.body.email;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
-    const password = "password";
+    // const password = "password";
+    const password = req.body.password;
 
     if (!email) {
         return res.status(422).send({ error: 'You must enter an email address.'});
