@@ -13,6 +13,7 @@ setUserInfo = (req) => {
 }
 
 generateToken = (user) => {
+    console.log(process.env.JWT_SECRET);
     return jwt.sign(user, process.env.JWT_SECRET, {
         expiresIn: 10080 //in seconds
     })
@@ -21,7 +22,6 @@ generateToken = (user) => {
 
 router.post('/', (req, res, next) => {
     console.log("Hit the register route")
-    console.log(req.body);
     // const email = "test2@gmail.com";
     const email = req.body.email;
     const firstName = req.body.firstName;
@@ -50,13 +50,19 @@ router.post('/', (req, res, next) => {
         if (existingUser) {
           return res.status(422).send({ error: 'That email address is already in use.' });
         }
-  
+        
+        
         // If email is unique and password was provided, create account
         let user = new User({
           email: email,
           password: password,
-          profile: { firstName: firstName, lastName: lastName }
+          profile: { firstName: firstName, lastName: lastName }, 
         });
+        let userInfo = setUserInfo(user);
+
+        let token = generateToken(userInfo)
+        user.token = token;
+        console.log(user);
   
         user.save(function(err, user) {
           if (err) { return next(err); }
@@ -66,11 +72,11 @@ router.post('/', (req, res, next) => {
   
           // Respond with JWT if user was created
   
-          let userInfo = setUserInfo(user);
+          
   
           res.status(201).json({
-            token: 'JWT ' + generateToken(userInfo),
-            user: userInfo
+            user: userInfo,
+            token: user.token
           });
         });
     });

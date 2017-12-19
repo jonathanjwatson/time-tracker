@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 const UsersController = require('./controllers/user');
 const RegisterController = require('./controllers/register');
+const APIController = require('./controllers/test');
 const LoginController = require('./controllers/login');
 const router = require('./router');
 const passport = require('passport');
@@ -29,15 +30,20 @@ connection.on('error', (err) => {
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use('/register', RegisterController);
-app.use('/login', requireLogin, LoginController);
-// app.use(function(req, res, next) {  
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     next();
-//   });
+app.use('/auth/register', RegisterController);
+app.use('/auth/login', requireLogin, LoginController);
+app.use('/api', APIController);
+app.use(function(req, res, next) {  
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+  });
+app.use(express.static(__dirname + '/client/build/'));
+app.get('*', (req,res) => {
+    res.sendFile(__dirname + '/client/build/index.html')
+  })
 
 
 

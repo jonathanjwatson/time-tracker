@@ -25,6 +25,10 @@ const UserSchema = new Schema({
       enum: ['Member', 'Client', 'Owner', 'Admin'],
       default: 'Member'
     },
+    token: {
+      type: String,
+      required: true
+    },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date }
   },
