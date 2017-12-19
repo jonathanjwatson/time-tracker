@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'universal-cookie'
+const cookies = new Cookies();
+
 
 class Login extends Component {
 	constructor() {
@@ -36,6 +39,7 @@ class Login extends Component {
 			let token = res.data.token;
 			console.log(token);
 			this.setState({token})
+			cookies.set("token", token);
 			if(token){
 				let redirect = !this.state.redirect;
 				this.setState({redirect})
@@ -44,7 +48,7 @@ class Login extends Component {
 	}
     render() {
 		if (this.state.redirect){
-			return <Redirect to="/dashboard" />
+			return <Redirect to="/dashboard" jwt={this.state.token}/>
 		  }
         return (
             <div>
